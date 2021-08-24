@@ -38,8 +38,18 @@ function kazcrm_show_content () {
 
 //Регистрация скриптов и стилей
 function register_assets () {
-    wp_register_style('kazcrm_style', plugins_url('assets/admin.css', __FILE__));
+    wp_register_style('kazcrm_styles', plugins_url('assets/css/admin.css', __FILE__));
+    wp_register_script('kazcrm_scripts', plugins_url('assets/js/admin.js', __FILE__));
 }
-
+add_action('admin_enqueue_scripts', 'register_assets');
 
 //Подключение скриптов и стилей
+function kazcrm_load_assets ($hook) {
+    if($hook != 'toplevel_page_kazcrm-options'){
+        return;
+    }
+    wp_enqueue_style('kazcrm_styles');
+    wp_enqueue_script('kazcrm_scripts');
+}
+
+add_action('admin_enqueue_scripts', 'kazcrm_load_assets');
